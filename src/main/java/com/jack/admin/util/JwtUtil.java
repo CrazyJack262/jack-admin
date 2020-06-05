@@ -7,7 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ public class JwtUtil {
      * 秘钥
      */
     private static final String DEFAULT_BASE64_ENCODED_SECRET_KEY = "qpasdjuasdhgasdlmvhasd";
+
     /**
      * 加密方式
      */

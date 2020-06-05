@@ -14,10 +14,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * shiro配置
+ *
+ * @autor crazyjack262
+ * @date 2020-06-05 09:26
+ */
 @Configuration
 public class ShiroConfig {
     /**
-     * a. 告诉shiro不要使用默认的DefaultSubject创建对象，因为不能创建Session
+     * 告诉shiro不要使用默认的DefaultSubject创建对象，因为不能创建Session
      */
     @Bean
     public SubjectFactory subjectFactory() {
