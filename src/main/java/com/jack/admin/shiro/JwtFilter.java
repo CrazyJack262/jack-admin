@@ -43,7 +43,7 @@ public class JwtFilter extends AccessControlFilter {
 
         //所以以后发起请求的时候就需要在Header中放一个Authorization，值就是对应的Token
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String jwt = request.getHeader("Authorization");
+        String jwt = request.getHeader("Authorization").replaceAll("Bearer ", "");
         log.info("请求的 Header 中藏有 jwtToken {}", jwt);
         JwtToken jwtToken = new JwtToken(jwt);
         try {

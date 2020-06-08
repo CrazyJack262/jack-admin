@@ -2,6 +2,7 @@ package com.jack.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemUser;
+import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.mapper.SystemUserMapper;
 
 /**
@@ -17,4 +18,8 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     SystemUser getUser(Integer id);
+
+
+
+    SystemUserVo doLogin(String loginName, String password);
 }

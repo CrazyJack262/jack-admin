@@ -3,6 +3,7 @@ package com.jack.admin.entity.dao;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.jack.admin.entity.vo.SystemUserVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class SystemUser implements Serializable {
      * 密码
      */
     @ApiModelProperty(value = "登录密码", name = "loginPasswd", required = true)
-    private String loginPasswd;
+    private String loginPassword;
 
     /**
      * 用户昵称
@@ -116,4 +117,23 @@ public class SystemUser implements Serializable {
      */
     @ApiModelProperty(value = "逻辑删除位 0 正常 1 删除", required = true)
     private Integer delFlag;
+
+    public SystemUserVo toVo() {
+        SystemUserVo vo = new SystemUserVo();
+        vo.setId(this.id);
+        vo.setLoginName(this.loginName);
+        vo.setLoginPassword(this.loginPassword);
+        vo.setUserName(this.userName);
+        vo.setUserStatus(this.userStatus);
+        vo.setUserPhone(this.userPhone);
+        vo.setLoginTime(this.loginTime);
+        vo.setRemark(this.remark);
+        vo.setCreateTime(this.createTime);
+        vo.setUpdateTime(this.updateTime);
+        vo.setVersion(this.version);
+        vo.setDelFlag(this.delFlag);
+        return vo;
+    }
+
+
 }
