@@ -3,50 +3,37 @@ package com.jack.admin.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jack.admin.entity.vo.SystemUserVo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
-/*
- * 总的来说，工具类中有三个方法
+/**
  * 获取JwtToken，获取JwtToken中封装的信息，判断JwtToken是否存在
  * 1. encode()，参数是=签发人，存在时间，一些其他的信息=。返回值是JwtToken对应的字符串
  * 2. decode()，参数是=JwtToken=。返回值是荷载部分的键值对
  * 3. isVerify()，参数是=JwtToken=。返回值是这个JwtToken是否存在
- * */
-
-/**
  *
+ * @author crazyjack262
  */
-public class JwtUtil {
-    /**
-     * 秘钥
-     */
-    private static final String DEFAULT_BASE64_ENCODED_SECRET_KEY = "qpasdjuasdhgasdlmvhasd";
+public abstract class JwtUtil {
 
-    /**
-     * 加密方式
-     */
-    private static final SignatureAlgorithm DEFAULT_SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+    private static final String base64EncodedSecretKey = "c3ByaW5nYm9vdHZ1ZWNyYXp5amFjazI2Mg==";
 
-    public JwtUtil() {
-        this(DEFAULT_BASE64_ENCODED_SECRET_KEY, DEFAULT_SIGNATURE_ALGORITHM);
-    }
+    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-    private final String base64EncodedSecretKey;
-    private final SignatureAlgorithm signatureAlgorithm;
+    private static final String TOKEN_PREFIX = "Bearer ";
 
-    public JwtUtil(String secretKey, SignatureAlgorithm signatureAlgorithm) {
-        this.base64EncodedSecretKey = Base64.encodeBase64String(secretKey.getBytes());
-        this.signatureAlgorithm = signatureAlgorithm;
-    }
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 这里就是产生jwt字符串的地方
@@ -62,7 +49,7 @@ public class JwtUtil {
      * iss：签发人，一般都是username或者userId
      * exp：过期时间
      */
-    public String encode(String iss, long ttlMillis, Map<String, Object> claims) {
+    public static String encode(String iss, long ttlMillis, Map<String, Object> claims) {
         //iss签发人，ttlMillis生存时间，claims是指还想要在jwt中存储的一些非隐私信息
         if (claims == null) {
             claims = new HashMap<>();
@@ -94,7 +81,7 @@ public class JwtUtil {
      * @param jwtToken
      * @return
      */
-    public Claims decode(String jwtToken) {
+    public static Claims decode(String jwtToken) {
         // 得到 DefaultJwtParser
         return Jwts.parser()
                 // 设置签名的秘钥
@@ -107,9 +94,10 @@ public class JwtUtil {
     /**
      * 判断jwtToken是否合法
      */
-    public boolean isVerify(String jwtToken) {
+    public static boolean isVerify(String jwtToken) {
         //这个是官方的校验规则，这里只写了一个”校验算法“，可以自己加
         Algorithm algorithm;
+        System.out.println(base64EncodedSecretKey);
         switch (signatureAlgorithm) {
             case HS256:
                 algorithm = Algorithm.HMAC256(Base64.decodeBase64(base64EncodedSecretKey));
@@ -124,18 +112,50 @@ public class JwtUtil {
         return true;
     }
 
+    /**
+     * jwtToken解析
+     *
+     * @param servletRequest
+     * @return
+     */
+    public static String resoleToken(ServletRequest servletRequest) {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String bearerToken = request.getHeader("Authorization");
+        String jwt = null;
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
+            jwt = bearerToken.substring(7);
+        } else {
+            request.setAttribute("msg", "非法请求");
+        }
+        return jwt;
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param servletRequest
+     * @return
+     */
+    public static SystemUserVo getUserInfo(ServletRequest servletRequest) {
+        String jwtToken = resoleToken(servletRequest);
+        Claims claims = decode(jwtToken);
+        SystemUserVo vo = objectMapper.convertValue(claims, SystemUserVo.class);
+        if (Objects.isNull(vo)) {
+            throw new UnknownAccountException();
+        }
+        return vo;
+    }
+
     public static void main(String[] args) {
-        JwtUtil util = new JwtUtil("tom", SignatureAlgorithm.HS256);
         //以tom作为秘钥，以HS256加密
         Map<String, Object> map = new HashMap<>();
         map.put("username", "tom");
         map.put("password", "123456");
         map.put("age", 20);
-
-        String jwtToken = util.encode("tom", 30000, map);
-
+        String jwtToken = JwtUtil.encode("tom", 30000, map);
+        System.out.println(JwtUtil.isVerify(jwtToken));
         System.out.println(jwtToken);
-        util.decode(jwtToken).entrySet().forEach((entry) -> {
+        JwtUtil.decode(jwtToken).entrySet().forEach((entry) -> {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         });
     }

@@ -19,7 +19,12 @@ public interface SystemUserService extends IService<SystemUser> {
      */
     SystemUser getUser(Integer id);
 
-
-
+    /**
+     * 账号密码登录
+     *
+     * @param loginName
+     * @param password
+     * @return
+     */
     SystemUserVo doLogin(String loginName, String password);
 }

@@ -3,19 +3,20 @@ package com.jack.admin.common.enumtype;
 /**
  * @author crazyjack262
  */
-public enum AdminError {
+public enum ErrorCode {
 
     // 2000-->Success!
     // 6000-->Fail！
     // 6000也可以作为自定义错误信息状态码
 
     // common
-    COMMON_ERROR("Fail！", 6000),
+    COMMON_ERROR("Fail", 500),
     COMMON_PARAMS_ERR("提交参数不合法", 6001),
     COMMON_PARAMS_ID_ERR("提交参数ID不合法", 6002),
     COMMON_EMPTY_CONDITION_RESULT("没有找到符合条件的数据", 6003),
     COMMON_PARAMS_NOT_EXIST("提交的字段不存在,或者参数格式错误", 6004),
     COMMON_PARAMS_REQUIRED("缺少必填参数", 6005),
+    COMMON_REQUEST_NOT_SUPPORTED("请求方式错误", 6006),
 
     // sql
     COMMON_SQL_ERROR("mysql通用错误", 6100),
@@ -63,7 +64,7 @@ public enum AdminError {
     public final String msg;
     public final int code;
 
-    AdminError(String msg, int code) {
+    ErrorCode(String msg, int code) {
         this.msg = msg;
         this.code = code;
     }

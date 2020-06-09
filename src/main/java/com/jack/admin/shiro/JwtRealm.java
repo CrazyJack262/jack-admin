@@ -9,6 +9,12 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+/**
+ * shiro Realm
+ *
+ * @author crazyjack262
+ * @date 2020-06-09 12:02
+ */
 @Slf4j
 public class JwtRealm extends AuthorizingRealm {
 
@@ -30,23 +36,12 @@ public class JwtRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-
         String jwt = (String) token.getPrincipal();
-        System.out.println(jwt);
-        if (jwt == null) {
-            throw new NullPointerException("jwtToken 不允许为空");
-        }
-        jwt = jwt.replaceAll("Bearer ", "");
         //判断
-        JwtUtil jwtUtil = new JwtUtil();
-        if (!jwtUtil.isVerify(jwt)) {
+        if (!JwtUtil.isVerify(jwt)) {
             throw new UnknownAccountException();
         }
-        Claims decode = jwtUtil.decode(jwt);
-        //下面是验证这个user是否是真实存在的
-        log.info("在使用token登录" +  decode.get("loginName"));
         return new SimpleAuthenticationInfo(jwt, jwt, "JwtRealm");
-        //这里返回的是类似账号密码的东西，但是jwtToken都是jwt字符串。还需要一个该Realm的类名
 
     }
 

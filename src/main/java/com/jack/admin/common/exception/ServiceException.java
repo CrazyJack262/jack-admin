@@ -1,7 +1,7 @@
 package com.jack.admin.common.exception;
 
 
-import com.jack.admin.common.enumtype.AdminError;
+import com.jack.admin.common.enumtype.ErrorCode;
 
 /**
  * service 异常
@@ -11,13 +11,13 @@ import com.jack.admin.common.enumtype.AdminError;
 public class ServiceException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private String msg = AdminError.COMMON_ERROR.msg;
-    private int code = AdminError.COMMON_ERROR.code;
+    private String msg = ErrorCode.COMMON_ERROR.msg;
+    private int code = ErrorCode.COMMON_ERROR.code;
 
-    public ServiceException(AdminError AdminError) {
-        super(AdminError.msg);
-        this.msg = AdminError.msg;
-        this.code = AdminError.code;
+    public ServiceException(ErrorCode ErrorCode) {
+        super(ErrorCode.msg);
+        this.msg = ErrorCode.msg;
+        this.code = ErrorCode.code;
     }
 
     public ServiceException(String msg) {

@@ -1,6 +1,7 @@
 package com.jack.admin.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jack.admin.entity.dao.SystemUser;
 import io.swagger.annotations.ApiModel;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Data
 @ApiModel(value = "用户VO对象", description = "用户VO对象")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SystemUserVo {
 
     /**

@@ -1,5 +1,6 @@
 package com.jack.admin.controller;
 
+import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.Result;
@@ -31,9 +32,9 @@ public class LoginController {
         return Result.ok(systemUser);
     }
 
-    @RequestMapping("/testdemo")
-    public ResponseEntity<String> testdemo() {
-        return ResponseEntity.ok("我爱蛋炒饭");
+    @RequestMapping("/test")
+    public Object test(SystemUserVo userVo) {
+        return Result.error(ErrorCode.COMMON_ERROR);
     }
 
 }
