@@ -33,13 +33,12 @@ public class JwtFilter extends AccessControlFilter {
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object mappedValue) {
-        log.warn("isAccessAllowed 方法被调用");
         String jwt = JwtUtil.resoleToken(servletRequest);
         if (!StringUtils.hasText(jwt)) {
             return false;
         }
+        JwtToken jwtToken = new JwtToken(jwt);
         try {
-            JwtToken jwtToken = new JwtToken(jwt);
             // 委托 realm 进行登录认证
             getSubject(servletRequest, servletResponse).login(jwtToken);
         } catch (Exception e) {
@@ -71,7 +70,7 @@ public class JwtFilter extends AccessControlFilter {
         Map<String, Object> body = Maps.newHashMap();
         body.put("code", HttpStatus.UNAUTHORIZED.value());
         Object msg = request.getAttribute("msg");
-        String errMsg = msg == null ? HttpStatus.UNAUTHORIZED.getReasonPhrase() : msg.toString();
+        String errMsg = msg == null ? "登录失效" : msg.toString();
         body.put("msg", errMsg);
         ObjectMapper objectMapper = new ObjectMapper();
         httpResponse.setContentType("application/json;charset=utf-8");

@@ -1,16 +1,14 @@
 package com.jack.admin.controller;
 
-import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.service.SystemUserService;
+import com.jack.admin.util.JwtUtil;
 import com.jack.admin.util.Result;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletRequest;
 
 /**
  * 登录登出
@@ -32,9 +30,10 @@ public class LoginController {
         return Result.ok(systemUser);
     }
 
-    @RequestMapping("/test")
-    public Object test(SystemUserVo userVo) {
-        return Result.error(ErrorCode.COMMON_ERROR);
+    @GetMapping
+    public Object getUserInfo(ServletRequest servletRequest) {
+        SystemUserVo userInfo = JwtUtil.getUserInfo(servletRequest);
+        return Result.ok(userInfo);
     }
 
 }

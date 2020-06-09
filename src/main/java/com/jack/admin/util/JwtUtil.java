@@ -95,16 +95,7 @@ public abstract class JwtUtil {
      * 判断jwtToken是否合法
      */
     public static boolean isVerify(String jwtToken) {
-        //这个是官方的校验规则，这里只写了一个”校验算法“，可以自己加
-        Algorithm algorithm;
-        System.out.println(base64EncodedSecretKey);
-        switch (signatureAlgorithm) {
-            case HS256:
-                algorithm = Algorithm.HMAC256(Base64.decodeBase64(base64EncodedSecretKey));
-                break;
-            default:
-                throw new RuntimeException("不支持该算法");
-        }
+        Algorithm algorithm = Algorithm.HMAC256(Base64.decodeBase64(base64EncodedSecretKey));
         //判断合法的标准：1. 头部和荷载部分没有篡改过。2. 没有过期
         JWTVerifier verifier = JWT.require(algorithm).build();
         // 校验不通过会抛出异常

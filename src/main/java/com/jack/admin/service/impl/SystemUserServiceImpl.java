@@ -51,8 +51,10 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         entity.setLoginPassword(null);
         // 有效载荷
         Map<String, Object> chaim = new HashMap<>();
-        chaim.put("loginName", loginName);
         chaim.put("id", entity.getId());
+        chaim.put("loginName", loginName);
+        chaim.put("userName", entity.getUserName());
+        chaim.put("userPhone", entity.getUserPhone());
         String jwtToken = JwtUtil.encode(loginName, 60 * 60 * 1000, chaim);
         SystemUserVo systemUserVo = entity.toVo();
         systemUserVo.setJwtToken(jwtToken);
