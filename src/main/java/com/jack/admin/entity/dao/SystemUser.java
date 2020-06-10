@@ -10,7 +10,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * 系统用户
@@ -55,6 +54,12 @@ public class SystemUser implements Serializable {
      */
     @ApiModelProperty(hidden = true)
     private String salt;
+
+    /**
+     * 头像地址
+     */
+    @ApiModelProperty(value = "头像地址", name = "avatarIcon", required = true)
+    private String avatarIcon;
 
     /**
      * 用户状态 0 正常 1 异常

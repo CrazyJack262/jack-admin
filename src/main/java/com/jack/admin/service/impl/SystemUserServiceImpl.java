@@ -13,7 +13,11 @@ import com.jack.admin.util.JwtUtil;
 import com.jack.admin.util.MD5Util;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -52,13 +56,21 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         // 有效载荷
         Map<String, Object> chaim = new HashMap<>();
         chaim.put("id", entity.getId());
-        chaim.put("loginName", loginName);
+        chaim.put("loginName", entity.getLoginName());
         chaim.put("userName", entity.getUserName());
         chaim.put("userPhone", entity.getUserPhone());
+        chaim.put("avatarIcon", entity.getAvatarIcon());
         String jwtToken = JwtUtil.encode(loginName, 60 * 60 * 1000, chaim);
         SystemUserVo systemUserVo = entity.toVo();
         systemUserVo.setJwtToken(jwtToken);
         return systemUserVo;
+    }
+
+    @Override
+    public SystemUserVo getUserInfo() {
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        return JwtUtil.getUserInfo(request);
     }
 
     /**

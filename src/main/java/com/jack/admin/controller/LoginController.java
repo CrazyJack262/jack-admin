@@ -31,9 +31,8 @@ public class LoginController {
     }
 
     @GetMapping
-    public Object getUserInfo(ServletRequest servletRequest) {
-        SystemUserVo userInfo = JwtUtil.getUserInfo(servletRequest);
-        return Result.ok(userInfo);
+    public Object getUserInfo() {
+        return Result.ok(systemUserService.getUserInfo());
     }
 
 }

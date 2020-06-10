@@ -27,4 +27,11 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     SystemUserVo doLogin(String loginName, String password);
+
+    /**
+     * 获取当前用户
+     *
+     * @return
+     */
+    SystemUserVo getUserInfo();
 }

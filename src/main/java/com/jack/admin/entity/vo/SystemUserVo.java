@@ -29,6 +29,12 @@ public class SystemUserVo {
     private String loginName;
 
     /**
+     * 头像地址
+     */
+    @ApiModelProperty(value = "头像地址", name = "avatarIcon", required = true)
+    private String avatarIcon;
+
+    /**
      * 密码
      */
     @ApiModelProperty(value = "登录密码", name = "loginPassword", required = true)
