@@ -7,6 +7,7 @@ import com.jack.admin.util.Result;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletRequest;
 
@@ -20,6 +21,7 @@ import javax.servlet.ServletRequest;
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
+@ApiIgnore
 public class LoginController {
 
     private final SystemUserService systemUserService;

@@ -62,5 +62,4 @@ out
 gen
 
 .taget
-src/main/java/com/jack/admin/config/
 src/main/resources/application-dev.yml

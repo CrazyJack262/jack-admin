@@ -59,13 +59,19 @@ public class ShiroConfig {
         shiroFilter.setUnauthorizedUrl("/unauthorized");
         Map<String, Filter> filterMap = new HashMap<>();
         // 自定义拦截器
-        filterMap.put("jwt", new JwtFilter());
+        filterMap.put("jwtFilter", new JwtFilter());
         shiroFilter.setFilters(filterMap);
 
         // 拦截器
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         filterRuleMap.put("/user/**", "anon");
-        filterRuleMap.put("/**", "jwt");
+        // 开放swagger文档
+        filterRuleMap.put("/swagger-ui.html", "anon");
+        filterRuleMap.put("/webjars/**", "anon");
+        filterRuleMap.put("/v2/**", "anon");
+        filterRuleMap.put("/swagger-resources/**", "anon");
+        // jwt拦截器
+        filterRuleMap.put("/**", "jwtFilter");
         shiroFilter.setFilterChainDefinitionMap(filterRuleMap);
 
         return shiroFilter;

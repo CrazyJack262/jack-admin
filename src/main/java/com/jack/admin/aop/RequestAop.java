@@ -36,7 +36,6 @@ public class RequestAop {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             HttpServletRequest request = attributes.getRequest();
-
             log.info("====================");
             log.info("Authorization: " + request.getHeader("Authorization"));
             log.info(request.getMethod() + "=>" + request.getRequestURL().toString());
