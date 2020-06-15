@@ -1,19 +1,18 @@
 package com.jack.admin.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.service.SystemUserService;
-import com.jack.admin.util.JwtUtil;
 import com.jack.admin.util.Result;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.ServletRequest;
 
 /**
  * 登录登出
@@ -42,5 +41,4 @@ public class LoginController {
     public Object getUserInfo() {
         return Result.ok(systemUserService.getUserInfo());
     }
-
 }

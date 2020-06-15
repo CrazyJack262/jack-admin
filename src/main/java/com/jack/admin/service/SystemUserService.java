@@ -1,9 +1,9 @@
 package com.jack.admin.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
-import com.jack.admin.mapper.SystemUserMapper;
 
 /**
  * @author crazyjack262
@@ -34,4 +34,15 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     SystemUserVo getUserInfo();
+
+    /**
+     * 用户列表查询
+     *
+     * @param pageSize
+     * @param pageNo
+     * @param username
+     * @param userStatus
+     * @return
+     */
+    IPage<SystemUser> search(Integer pageSize, Integer pageNo, String username, Integer userStatus);
 }

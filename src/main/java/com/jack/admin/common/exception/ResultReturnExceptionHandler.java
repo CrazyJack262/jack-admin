@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -83,6 +84,17 @@ public class ResultReturnExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public Result handleIllegalArgumentException(Exception e) {
         log.error(exTraceBack(e), e);
+        return Result.error(e.getMessage());
+    }
+
+    /**
+     * 参数缺失
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public Result handleIllegalArgumentException(MissingServletRequestParameterException e) {
         return Result.error(e.getMessage());
     }
 

@@ -1,5 +1,6 @@
 package com.jack.admin.aop;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -25,6 +26,8 @@ import java.util.Arrays;
 @Slf4j
 @Component
 public class RequestAop {
+
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @Pointcut("execution(* com.jack.admin.controller..*.*(..))")
     public void requestAop() {
@@ -53,7 +56,7 @@ public class RequestAop {
     @AfterReturning(returning = "ret", pointcut = "requestAop()")
     public void doAfterReturning(Object ret) throws Throwable {
         // 关闭:  返回前进行内容结果日志输出
-        log.info("RESPONSE: " + ret);
+        log.info("RESPONSE: " + objectMapper.writeValueAsString(ret));
         log.info("====================\n");
     }
 

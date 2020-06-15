@@ -1,7 +1,9 @@
 package com.jack.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.common.exception.ServiceException;
@@ -19,8 +21,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author crazyjack262
@@ -71,6 +75,17 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         return JwtUtil.getUserInfo(request);
+    }
+
+    @Override
+    public IPage<SystemUser> search(Integer pageSize, Integer pageNo, String username, Integer userStatus) {
+        IPage<SystemUser> page = new Page<>(pageSize, pageNo);
+        SystemUser condition = new SystemUser();
+        condition.setUserName(username);
+        condition.setUserStatus(userStatus);
+        QueryWrapper<SystemUser> select = Wrappers.query(condition).select("id,login_name,user_name,user_status,user_phone,login_time,remark,fail_count,version,del_flag");
+        IPage<SystemUser> iPage = baseMapper.selectPage(page, select);
+        return iPage;
     }
 
     /**
