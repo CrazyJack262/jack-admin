@@ -1,7 +1,5 @@
 package com.jack.admin.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.Result;
