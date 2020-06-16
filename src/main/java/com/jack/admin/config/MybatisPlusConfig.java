@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020-06-15 14:52
  */
 @Configuration
-public class MyBatisPlusConfig {
+public class MybatisPlusConfig {
 
     /**
      * 乐观锁插件
