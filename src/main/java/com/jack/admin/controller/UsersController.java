@@ -30,7 +30,8 @@ public class UsersController {
     @GetMapping("search")
     public Object search(@ApiParam(value = "页码", defaultValue = "1") @RequestParam Integer pageSize,
                          @ApiParam(value = "每页行数", defaultValue = "10") @RequestParam Integer pageNo,
-                         String username, Integer userStatus) {
+                         @ApiParam(value = "用户名", defaultValue = "admin") @RequestParam(required = false) String username,
+                         @ApiParam(value = "用户状态 0 正常 1 异常", defaultValue = "0") @RequestParam(required = false) Integer userStatus) {
         return Result.ok(systemUserService.search(pageSize, pageNo, username, userStatus));
     }
 }

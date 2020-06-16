@@ -65,6 +65,7 @@ public class ShiroConfig {
         // 拦截器
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         filterRuleMap.put("/user/**", "anon");
+        filterRuleMap.put("/token/**", "anon");
         // 开放swagger文档
         filterRuleMap.put("/swagger-ui.html", "anon");
         filterRuleMap.put("/webjars/**", "anon");
