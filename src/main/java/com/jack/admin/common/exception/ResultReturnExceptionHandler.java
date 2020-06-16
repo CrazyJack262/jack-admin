@@ -3,6 +3,7 @@ package com.jack.admin.common.exception;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.util.Result;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -105,10 +106,17 @@ public class ResultReturnExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result handleException(HttpRequestMethodNotSupportedException e) {
+    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(exTraceBack(e), e);
         return Result.error(ErrorCode.COMMON_REQUEST_NOT_SUPPORTED);
     }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public Result handleExpiredJwtException(ExpiredJwtException e) {
+        log.error(exTraceBack(e), e);
+        return Result.error("登录已超时，请重新登录");
+    }
+
 
     public static String exTraceBack(Exception e) {
         StringBuilder sb = new StringBuilder();

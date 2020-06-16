@@ -38,11 +38,11 @@ public interface SystemUserService extends IService<SystemUser> {
     /**
      * 用户列表查询
      *
-     * @param pageSize
-     * @param pageNo
+     * @param page
+     * @param limit
      * @param username
      * @param userStatus
      * @return
      */
-    IPage<SystemUser> search(Integer pageSize, Integer pageNo, String username, Integer userStatus);
+    IPage<SystemUser> search(Integer page, Integer limit, String username, Integer userStatus);
 }
