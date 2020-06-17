@@ -11,7 +11,7 @@ import com.jack.admin.common.enumtype.ErrorCode;
 public class ServiceException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private String msg = ErrorCode.COMMON_ERROR.msg;
+    private String msg;
     private int code = ErrorCode.COMMON_ERROR.code;
 
     public ServiceException(ErrorCode ErrorCode) {
