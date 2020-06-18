@@ -20,9 +20,9 @@ public enum ErrorCode {
 
     // sql
     COMMON_SQL_ERROR("mysql通用错误", 6100),
-    COMMON_SQL_INSERT_FAIL("增加失败", 6101),
-    COMMON_SQL_DELETE_FAIL("删除失败", 6102),
-    COMMON_SQL_UPDATE_FAIL("修改失败", 6103),
+    COMMON_SQL_INSERT_FAIL("数据新增失败", 6101),
+    COMMON_SQL_DELETE_FAIL("数据删除失败", 6102),
+    COMMON_SQL_UPDATE_FAIL("数据修改失败", 6103),
     COMMON_SQL_NAME_EXIST("该名称已存在", 6104),
     COMMON_SQL_ID_NOT_EXIST("主键ID不能为空", 6105),
     COMMON_SQL_VERSION_NOT_EXIST("数据版本version不能为空", 6106),

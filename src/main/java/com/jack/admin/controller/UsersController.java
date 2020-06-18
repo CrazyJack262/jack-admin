@@ -1,5 +1,6 @@
 package com.jack.admin.controller;
 
+import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.Result;
@@ -8,10 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author crazyjack262
@@ -33,5 +31,32 @@ public class UsersController {
                          @ApiParam(value = "用户名", defaultValue = "admin") @RequestParam(required = false) String username,
                          @ApiParam(value = "用户状态 0 正常 1 异常", defaultValue = "0") @RequestParam(required = false) Integer userStatus) {
         return Result.ok(systemUserService.search(page, limit, username, userStatus));
+    }
+
+    @ApiOperation(value = "获取用户信息", notes = "获取用户信息", response = SystemUserVo.class)
+    @GetMapping("/{id}")
+    public Object getById(@ApiParam(value = "用户id", defaultValue = "1") @PathVariable Integer id) {
+        return Result.ok(systemUserService.findById(id));
+    }
+
+    @ApiOperation(value = "删除指定用户", notes = "删除指定用户", response = SystemUserVo.class)
+    @DeleteMapping("/{id}")
+    public Object deleteById(@ApiParam(value = "用户id", defaultValue = "1") @PathVariable Integer id) {
+        return Result.ok(systemUserService.deleteById(id));
+    }
+
+    @ApiOperation(value = "更新指定用户", notes = "更新指定用户", response = SystemUserVo.class)
+    @PutMapping("/{id}")
+    public Object updateById(@ApiParam(value = "用户id", defaultValue = "1") @PathVariable Integer id, @RequestBody SystemUserVo vo) {
+        vo.setId(id);
+        SystemUser systemUser = vo.toDao();
+        return Result.ok(systemUserService.updateUserById(systemUser));
+    }
+
+    @ApiOperation(value = "新增用户", notes = "新增用户", response = SystemUserVo.class)
+    @PostMapping
+    public Object saveUser(@RequestBody SystemUserVo vo) {
+        SystemUser systemUser = vo.toDao();
+        return Result.ok(systemUserService.saveUser(systemUser));
     }
 }

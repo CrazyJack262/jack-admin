@@ -45,4 +45,36 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     IPage<SystemUser> search(Integer page, Integer limit, String username, Integer userStatus);
+
+    /**
+     * 获取指定id用户信息
+     *
+     * @param id
+     * @return
+     */
+    SystemUserVo findById(Integer id);
+
+    /**
+     * 删除指定用户
+     *
+     * @param id
+     * @return
+     */
+    boolean deleteById(Integer id);
+
+    /**
+     * 新增用户
+     *
+     * @param systemUser
+     * @return
+     */
+    SystemUserVo saveUser(SystemUser systemUser);
+
+    /**
+     * 更新用户
+     *
+     * @param systemUser
+     * @return
+     */
+    boolean updateUserById(SystemUser systemUser);
 }

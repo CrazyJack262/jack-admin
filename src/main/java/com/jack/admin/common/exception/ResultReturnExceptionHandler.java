@@ -96,7 +96,7 @@ public class ResultReturnExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result handleIllegalArgumentException(MissingServletRequestParameterException e) {
-        return Result.error(e.getMessage());
+        return Result.error(ErrorCode.COMMON_PARAMS_REQUIRED);
     }
 
     @ExceptionHandler(Exception.class)
@@ -113,8 +113,7 @@ public class ResultReturnExceptionHandler {
 
     @ExceptionHandler(ExpiredJwtException.class)
     public Result handleExpiredJwtException(ExpiredJwtException e) {
-        log.error(exTraceBack(e), e);
-        return Result.error("登录已超时，请重新登录");
+        return Result.error(ErrorCode.USER_ACCOUNT_EXPIRED);
     }
 
 

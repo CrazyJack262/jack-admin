@@ -13,7 +13,9 @@ import com.jack.admin.mapper.SystemUserMapper;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.JwtUtil;
 import com.jack.admin.util.MD5Util;
+import com.jack.admin.util.UUIDUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -84,6 +86,62 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         select.like(StringUtils.hasText(username), "user_name", username);
         IPage<SystemUser> iPage = baseMapper.selectPage(pageRet, select);
         return iPage;
+    }
+
+    @Override
+    public SystemUserVo findById(Integer id) {
+        SystemUser systemUser = baseMapper.selectById(id);
+        if (Objects.isNull(systemUser)) {
+            throw new ServiceException(ErrorCode.COMMON_EMPTY_CONDITION_RESULT);
+        }
+        return systemUser.toVo();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteById(Integer id) {
+        int ret = baseMapper.deleteById(id);
+        if (ret > 0) {
+            return true;
+        } else {
+            throw new ServiceException(ErrorCode.COMMON_SQL_DELETE_FAIL);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SystemUserVo saveUser(SystemUser systemUser) {
+        String salt = UUIDUtil.getUUID();
+        String password = getPassword(salt, systemUser.getLoginPassword());
+        systemUser.setSalt(salt);
+        systemUser.setLoginPassword(password);
+        int insert = baseMapper.insert(systemUser);
+        if (insert > 0) {
+            return systemUser.toVo();
+        } else {
+            throw new ServiceException(ErrorCode.COMMON_SQL_INSERT_FAIL);
+        }
+    }
+
+    @Override
+    public boolean updateUserById(SystemUser systemUser) {
+        Integer version = systemUser.getVersion();
+        if (Objects.isNull(version)){
+            throw new ServiceException(ErrorCode.COMMON_SQL_VERSION_NOT_EXIST);
+        }
+        String loginPassword = systemUser.getLoginPassword();
+        if (StringUtils.hasText(loginPassword)) {
+            String salt = UUIDUtil.getUUID();
+            String password = getPassword(salt, systemUser.getLoginPassword());
+            systemUser.setSalt(salt);
+            systemUser.setLoginPassword(password);
+        }
+        int ret = baseMapper.updateById(systemUser);
+        if (ret > 0) {
+            return true;
+        } else {
+            throw new ServiceException(ErrorCode.COMMON_SQL_UPDATE_FAIL);
+        }
     }
 
     /**
