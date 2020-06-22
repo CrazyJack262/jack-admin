@@ -23,7 +23,6 @@ import java.util.Date;
 @TableName("t_system_user")
 public class SystemUser implements Serializable {
 
-    private static final long serialVersionUID = -1649080014488800810L;
     /**
      * 主键
      */
