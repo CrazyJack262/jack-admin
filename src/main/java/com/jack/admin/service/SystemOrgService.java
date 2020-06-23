@@ -16,4 +16,11 @@ public interface SystemOrgService extends IService<SystemOrg> {
      */
     Object getTrees();
 
+    /**
+     * 新增部门
+     *
+     * @param vo
+     * @return
+     */
+    SystemOrg saveOrg(SystemOrg vo);
 }

@@ -20,6 +20,12 @@ public class ServiceException extends RuntimeException {
         this.code = ErrorCode.code;
     }
 
+    public ServiceException(ErrorCode ErrorCode, String msg) {
+        super(msg);
+        this.msg = msg;
+        this.code = ErrorCode.code;
+    }
+
     public ServiceException(String msg) {
         super(msg);
         this.msg = msg;

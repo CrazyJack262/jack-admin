@@ -2,18 +2,22 @@ package com.jack.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.common.exception.ServiceException;
+import com.jack.admin.entity.dao.SystemOrgUser;
 import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
+import com.jack.admin.mapper.SystemOrgUserMapper;
 import com.jack.admin.mapper.SystemUserMapper;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.JwtUtil;
 import com.jack.admin.util.MD5Util;
 import com.jack.admin.util.UUIDUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,9 +26,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author crazyjack262
@@ -32,6 +35,9 @@ import java.util.Objects;
  */
 @Service
 public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements SystemUserService {
+
+    @Autowired
+    private SystemOrgUserMapper orgUserMapper;
 
     @Override
     public SystemUser getUser(Integer id) {
@@ -126,7 +132,7 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
     @Override
     public boolean updateUserById(SystemUser systemUser) {
         Integer version = systemUser.getVersion();
-        if (Objects.isNull(version)){
+        if (Objects.isNull(version)) {
             throw new ServiceException(ErrorCode.COMMON_SQL_VERSION_NOT_EXIST);
         }
         String loginPassword = systemUser.getLoginPassword();
@@ -142,6 +148,33 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
         } else {
             throw new ServiceException(ErrorCode.COMMON_SQL_UPDATE_FAIL);
         }
+    }
+
+    @Override
+    public IPage<SystemUser> searchByOrg(Integer page, Integer limit, Integer orgId, Integer orgStatus, String username) {
+
+        List<Integer> ids = new ArrayList<>();
+        if (orgId != 0) {
+            SystemOrgUser orgUser = new SystemOrgUser();
+            orgUser.setOrgId(orgId);
+            List<SystemOrgUser> systemOrgUsers = orgUserMapper.selectList(Wrappers.query(orgUser));
+            if (CollectionUtils.isEmpty(systemOrgUsers) && orgStatus == 0) {
+                return new Page<>(page, limit);
+            }
+            ids = systemOrgUsers.stream().map(SystemOrgUser::getUserId).collect(Collectors.toList());
+        }
+        IPage<SystemUser> pageRet = new Page<>(page, limit);
+        SystemUser condition = new SystemUser();
+        QueryWrapper<SystemUser> select = Wrappers.query(condition).select("id,login_name,user_name,user_status,user_phone,login_time,remark,fail_count,version,del_flag");
+        select.like(StringUtils.hasText(username), "user_name", username);
+        if (orgStatus == 0) {
+            select.in(CollectionUtils.isNotEmpty(ids), "id", ids);
+        } else {
+            select.notIn(CollectionUtils.isNotEmpty(ids), "id", ids);
+        }
+
+        IPage<SystemUser> iPage = baseMapper.selectPage(pageRet, select);
+        return iPage;
     }
 
     /**

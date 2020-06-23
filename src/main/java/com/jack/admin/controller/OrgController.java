@@ -30,6 +30,12 @@ public class OrgController {
         return Result.ok(orgService.getTrees());
     }
 
+    @ApiOperation(value = "获取部门信息列表", notes = "获取部门信息列表", response = Tree.class)
+    @GetMapping("/list")
+    public Object getList() {
+        return Result.ok(orgService.list());
+    }
+
     @ApiOperation(value = "获取部门信息", notes = "获取部门信息", response = SystemUserVo.class)
     @GetMapping("/{id}")
     public Object getById(@ApiParam(value = "部门id", defaultValue = "1") @PathVariable Integer id) {
@@ -52,6 +58,6 @@ public class OrgController {
     @ApiOperation(value = "新增部门", notes = "新增部门", response = SystemUserVo.class)
     @PostMapping
     public Object saveOrg(@RequestBody SystemOrg vo) {
-        return Result.ok(orgService.save(vo));
+        return Result.ok(orgService.saveOrg(vo));
     }
 }

@@ -77,4 +77,15 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     boolean updateUserById(SystemUser systemUser);
+
+    /**
+     * 指定部门下的用户查询
+     *
+     * @param page
+     * @param limit
+     * @param orgId
+     * @param username
+     * @return
+     */
+    IPage<SystemUser> searchByOrg(Integer page, Integer limit, Integer orgId, Integer orgStatus, String username);
 }

@@ -1,5 +1,7 @@
 package com.jack.admin.entity.dao;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModel;
@@ -21,6 +23,7 @@ public class SystemOrg {
 	 * 主键ID
 	 */
 	@ApiModelProperty(value = " del,modify必传", name = "id", required = true)
+	@TableId(value = "id", type = IdType.AUTO)
 	private Integer id;
 
 	/**
@@ -34,12 +37,6 @@ public class SystemOrg {
 	 */
 	@ApiModelProperty(value = "上级组织ID", name = "orgPid", required = true)
 	private Integer orgPid;
-
-	/**
-	 * 组织层级：0业主/集团，1级子单位，2职能部门，3.组
-	 */
-	@ApiModelProperty(value = "层级", name = "orgLevel", required = true)
-	private Short orgLevel;
 
 	/**
 	 * 组织架构全编码
