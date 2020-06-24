@@ -62,6 +62,9 @@ public class SystemOrg {
 	@ApiModelProperty(hidden = true)
 	private Date updateTime;
 
+	@ApiModelProperty(hidden = true)
+	private Integer delFlag;
+
 
 	@ApiModelProperty(value = "修改时必传", name = "version", required = true)
 	@Version
