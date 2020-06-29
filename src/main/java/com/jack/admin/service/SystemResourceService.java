@@ -1,7 +1,9 @@
 package com.jack.admin.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemResource;
+import com.jack.admin.entity.vo.SystemResourceVo;
 
 /**
  * @author crazyjack262
@@ -17,5 +19,21 @@ public interface SystemResourceService extends IService<SystemResource> {
      * @param menuId
      * @return
      */
-    Object search(Integer page, Integer limit, String resourceName, Integer menuId);
+    IPage<SystemResource> search(Integer page, Integer limit, String resourceName, Integer menuId);
+
+    /**
+     * 新增资源
+     *
+     * @param vo
+     * @return
+     */
+    boolean saveRes(SystemResourceVo vo);
+
+    /**
+     * 删除指定资源
+     *
+     * @param id
+     * @return
+     */
+    boolean deleteById(Integer id);
 }

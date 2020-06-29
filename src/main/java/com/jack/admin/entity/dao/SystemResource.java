@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -22,9 +23,11 @@ public class SystemResource {
     private Integer id;
 
     @ApiModelProperty(value = "资源名称", name = "resourceName", required = true)
+    @NotNull(message = "资源名称不能为空")
     private String resourceName;
 
     @ApiModelProperty(value = "资源URI", name = "resourceUri", required = true)
+    @NotNull(message = "资源URI不能为空")
     private String resourceUrl;
 
     @ApiModelProperty(value = "资源权限", name = "permission", required = false)

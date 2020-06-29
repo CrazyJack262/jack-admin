@@ -2,6 +2,9 @@ package com.jack.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemMenu;
+import com.jack.admin.entity.vo.Tree;
+
+import java.util.List;
 
 /**
  * @author crazyjack262
@@ -14,6 +17,6 @@ public interface SystemMenuService extends IService<SystemMenu> {
      *
      * @return
      */
-    Object getTrees();
+    List<Tree> getTrees();
 
 }

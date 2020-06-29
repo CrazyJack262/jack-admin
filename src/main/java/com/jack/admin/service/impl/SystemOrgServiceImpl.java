@@ -27,7 +27,7 @@ import java.util.Map;
 public class SystemOrgServiceImpl extends ServiceImpl<SystemOrgMapper, SystemOrg> implements SystemOrgService {
 
     @Override
-    public Object getTrees() {
+    public List<Tree> getTrees() {
         List<SystemOrg> orgList = baseMapper.selectList(Wrappers.query());
         if (CollectionUtils.isEmpty(orgList)) {
             return new ArrayList<>();

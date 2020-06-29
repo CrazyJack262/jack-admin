@@ -13,7 +13,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 /**
  * Aop实现请求参数打印
@@ -46,7 +45,7 @@ public class RequestAop {
                     + joinPoint.getSignature().getDeclaringTypeName()
                     + "."
                     + joinPoint.getSignature().getName());
-            log.info("ARGS: " + Arrays.toString(joinPoint.getArgs()));
+            log.info("ARGS: " + objectMapper.writeValueAsString(joinPoint.getArgs()));
             log.info("====================\n");
         }
 

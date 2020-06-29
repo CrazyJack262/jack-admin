@@ -2,6 +2,9 @@ package com.jack.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemOrg;
+import com.jack.admin.entity.vo.Tree;
+
+import java.util.List;
 
 /**
  * @author crazyjack262
@@ -14,7 +17,7 @@ public interface SystemOrgService extends IService<SystemOrg> {
      *
      * @return
      */
-    Object getTrees();
+    List<Tree> getTrees();
 
     /**
      * 新增部门

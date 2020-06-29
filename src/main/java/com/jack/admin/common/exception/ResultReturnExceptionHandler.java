@@ -10,12 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
+
+import java.util.List;
 
 /**
  * 控制器增强
@@ -96,7 +101,25 @@ public class ResultReturnExceptionHandler {
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result handleIllegalArgumentException(MissingServletRequestParameterException e) {
+        log.error(exTraceBack(e), e);
         return Result.error(ErrorCode.COMMON_PARAMS_REQUIRED);
+    }
+
+    /**
+     * 参数验证
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result handleIllegalArgumentException(MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            log.error("error field is : {} ,message is : {}", fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        return Result.error(ErrorCode.COMMON_PARAMS_ERR.code, bindingResult.getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(Exception.class)

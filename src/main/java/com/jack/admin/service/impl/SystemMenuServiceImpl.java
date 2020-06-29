@@ -22,7 +22,7 @@ import java.util.Map;
 public class SystemMenuServiceImpl extends ServiceImpl<SystemMenuMapper, SystemMenu> implements SystemMenuService {
 
     @Override
-    public Object getTrees() {
+    public   List<Tree> getTrees() {
         List<SystemMenu> menus = baseMapper.selectList(Wrappers.query());
         if (CollectionUtils.isEmpty(menus)) {
             return new ArrayList<>();
