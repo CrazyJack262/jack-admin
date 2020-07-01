@@ -2,6 +2,7 @@ package com.jack.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jack.admin.entity.dao.SystemMenu;
+import com.jack.admin.entity.vo.MenuTree;
 import com.jack.admin.entity.vo.Tree;
 
 import java.util.List;
@@ -18,5 +19,12 @@ public interface SystemMenuService extends IService<SystemMenu> {
      * @return
      */
     List<Tree> getTrees();
+
+    /**
+     * 获取PC侧边栏菜单
+     *
+     * @return
+     */
+    List<MenuTree> getPcTrees();
 
 }

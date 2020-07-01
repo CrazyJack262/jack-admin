@@ -1,6 +1,7 @@
 package com.jack.admin.controller;
 
 import com.jack.admin.entity.dao.SystemMenu;
+import com.jack.admin.entity.vo.MenuTree;
 import com.jack.admin.entity.vo.Tree;
 import com.jack.admin.service.SystemMenuService;
 import com.jack.admin.util.Result;
@@ -22,6 +23,12 @@ import org.springframework.web.bind.annotation.*;
 public class MenuController {
     @Autowired
     private SystemMenuService menuService;
+
+    @ApiOperation(value = "获取PC用户的菜单-树形态", notes = "获取PC用户的菜单-树形态", response = MenuTree.class)
+    @GetMapping("/pcTrees")
+    public Object getPcTrees() {
+        return Result.ok(menuService.getPcTrees());
+    }
 
     @ApiOperation(value = "获取所有菜单-树形态", notes = "获取所有菜单-树形态", response = Tree.class)
     @GetMapping("/trees")
