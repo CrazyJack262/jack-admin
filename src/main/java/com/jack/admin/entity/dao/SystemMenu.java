@@ -31,9 +31,6 @@ public class SystemMenu {
     @ApiModelProperty(value = "菜单路径", name = "menuUrl", required = false)
     private String menuUrl;
 
-    @ApiModelProperty(value = "菜单组件", name = "menuComponent", required = false)
-    private String menuComponent;
-
     @ApiModelProperty(value = "菜单排序", name = "menuOrder", required = false)
     private Integer menuOrder;
 

@@ -110,7 +110,7 @@ public class SystemMenuServiceImpl extends ServiceImpl<SystemMenuMapper, SystemM
         MenuTree menu = new MenuTree();
         MenuMeta menuMeta = new MenuMeta();
         menu.setPath(obj.getMenuUrl());
-        menu.setComponent(obj.getMenuComponent());
+        menu.setComponent(obj.getMenuUrl());
         menuMeta.setTitle(obj.getMenuName());
         menuMeta.setIcon(obj.getMenuIcon());
         menu.setMeta(menuMeta);
