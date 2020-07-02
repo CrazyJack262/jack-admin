@@ -3,6 +3,7 @@ package com.jack.admin.entity.dao;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,6 +15,7 @@ import lombok.Data;
 @Data
 @TableName("t_system_menu")
 @ApiModel(value = "菜单对象", description = "菜单对象")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SystemMenu {
     /**
      * 主键ID
