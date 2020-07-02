@@ -4,17 +4,23 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jack.admin.common.enumtype.ErrorCode;
+import com.jack.admin.common.exception.ServiceException;
 import com.jack.admin.entity.dao.SystemMenu;
+import com.jack.admin.entity.dao.SystemRoleUser;
+import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.entity.vo.Tree;
 import com.jack.admin.mapper.SystemMenuMapper;
 import com.jack.admin.service.SystemMenuService;
+import com.jack.admin.service.SystemRoleUserService;
+import com.jack.admin.service.SystemUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author crazyjack262
@@ -22,6 +28,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SystemMenuServiceImpl extends ServiceImpl<SystemMenuMapper, SystemMenu> implements SystemMenuService {
+
+    @Autowired
+    private SystemUserService userService;
+
+    @Autowired
+    private SystemRoleUserService roleUserService;
 
     @Override
     public List<Tree> getTrees() {
@@ -60,10 +72,16 @@ public class SystemMenuServiceImpl extends ServiceImpl<SystemMenuMapper, SystemM
 
     @Override
     public List<String> getPcTrees() {
-        QueryWrapper<SystemMenu> query = Wrappers.query();
-        query.select("menu_url");
-        List<SystemMenu> menus = baseMapper.selectList(query);
-        return menus.stream().map(SystemMenu::getMenuUrl).collect(Collectors.toList());
+        SystemUserVo userInfo = userService.getUserInfo();
+        SystemRoleUser systemRoleUser = new SystemRoleUser();
+        systemRoleUser.setUserId(userInfo.getId());
+        QueryWrapper<SystemRoleUser> roleUserQuery = Wrappers.query(systemRoleUser);
+        List<SystemRoleUser> roleUsers = roleUserService.list(roleUserQuery);
+        if (CollectionUtils.isEmpty(roleUsers)) {
+            throw new ServiceException(ErrorCode.COMMON_PARAMS_ID_ERR, "用户未指定角色");
+        }
+        SystemRoleUser roleUser = roleUsers.get(0);
+        return baseMapper.selectByRoleId(roleUser.getRoleId());
     }
 
     private Tree menuToJsTree(SystemMenu obj) {
