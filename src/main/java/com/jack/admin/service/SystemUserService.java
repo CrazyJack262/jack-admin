@@ -88,4 +88,16 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return
      */
     IPage<SystemUser> searchByOrg(Integer page, Integer limit, Integer orgId, Integer orgStatus, String username);
+
+    /**
+     * 指定角色下的查询
+     *
+     * @param page
+     * @param limit
+     * @param roleId
+     * @param roleStatus
+     * @param username
+     * @return
+     */
+    IPage<SystemUser> searchByRole(Integer page, Integer limit, Integer roleId, Integer roleStatus, String username);
 }

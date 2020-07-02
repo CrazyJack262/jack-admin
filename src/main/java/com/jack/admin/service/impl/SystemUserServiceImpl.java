@@ -9,9 +9,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jack.admin.common.enumtype.ErrorCode;
 import com.jack.admin.common.exception.ServiceException;
 import com.jack.admin.entity.dao.SystemOrgUser;
+import com.jack.admin.entity.dao.SystemRoleUser;
 import com.jack.admin.entity.dao.SystemUser;
 import com.jack.admin.entity.vo.SystemUserVo;
 import com.jack.admin.mapper.SystemOrgUserMapper;
+import com.jack.admin.mapper.SystemRoleUserMapper;
 import com.jack.admin.mapper.SystemUserMapper;
 import com.jack.admin.service.SystemUserService;
 import com.jack.admin.util.JwtUtil;
@@ -38,6 +40,9 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     @Autowired
     private SystemOrgUserMapper orgUserMapper;
+
+    @Autowired
+    private SystemRoleUserMapper roleUserMapper;
 
     @Override
     public SystemUser getUser(Integer id) {
@@ -152,7 +157,6 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
 
     @Override
     public IPage<SystemUser> searchByOrg(Integer page, Integer limit, Integer orgId, Integer orgStatus, String username) {
-
         List<Integer> ids = new ArrayList<>();
         if (orgId != 0) {
             SystemOrgUser orgUser = new SystemOrgUser();
@@ -163,7 +167,6 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
             }
             ids = systemOrgUsers.stream().map(SystemOrgUser::getUserId).collect(Collectors.toList());
         }
-        IPage<SystemUser> pageRet = new Page<>(page, limit);
         SystemUser condition = new SystemUser();
         QueryWrapper<SystemUser> select = Wrappers.query(condition).select("id,login_name,user_name,user_status,user_phone,login_time,remark,fail_count,version,del_flag");
         select.like(StringUtils.hasText(username), "user_name", username);
@@ -173,7 +176,32 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
             select.notIn(CollectionUtils.isNotEmpty(ids), "id", ids);
         }
 
-        IPage<SystemUser> iPage = baseMapper.selectPage(pageRet, select);
+        IPage<SystemUser> iPage = baseMapper.selectPage(new Page<>(page, limit), select);
+        return iPage;
+    }
+
+    @Override
+    public IPage<SystemUser> searchByRole(Integer page, Integer limit, Integer orgId, Integer roleStatus, String username) {
+        List<Integer> ids = new ArrayList<>();
+        if (orgId != 0) {
+            SystemRoleUser roleUser = new SystemRoleUser();
+            roleUser.setRoleId(orgId);
+            List<SystemRoleUser> systemOrgUsers = roleUserMapper.selectList(Wrappers.query(roleUser));
+            if (CollectionUtils.isEmpty(systemOrgUsers) && roleStatus == 0) {
+                return new Page<>(page, limit);
+            }
+            ids = systemOrgUsers.stream().map(SystemRoleUser::getUserId).collect(Collectors.toList());
+        }
+        SystemUser condition = new SystemUser();
+        QueryWrapper<SystemUser> select = Wrappers.query(condition).select("id,login_name,user_name,user_status,user_phone,login_time,remark,fail_count,version,del_flag");
+        select.like(StringUtils.hasText(username), "user_name", username);
+        if (roleStatus == 0) {
+            select.in(CollectionUtils.isNotEmpty(ids), "id", ids);
+        } else {
+            select.notIn(CollectionUtils.isNotEmpty(ids), "id", ids);
+        }
+
+        IPage<SystemUser> iPage = baseMapper.selectPage(new Page<>(page, limit), select);
         return iPage;
     }
 

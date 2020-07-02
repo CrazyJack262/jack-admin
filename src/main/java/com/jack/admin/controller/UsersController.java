@@ -33,7 +33,7 @@ public class UsersController {
         return Result.ok(systemUserService.search(page, limit, username, userStatus));
     }
 
-    @ApiOperation(value = "用户列表条件查询", notes = "用户列表条件查询", response = SystemUserVo.class)
+    @ApiOperation(value = "用户列表条件查询-部门", notes = "用户列表条件查询-部门", response = SystemUserVo.class)
     @GetMapping("/org/search")
     public Object searchByOrg(@ApiParam(value = "0 查询所有部门的用户 其他则查询指定部门", defaultValue = "1") @RequestParam Integer orgId,
                               @ApiParam(value = "0 查询指定部门内 1 查询指定部门外", defaultValue = "1") @RequestParam Integer orgStatus,
@@ -41,6 +41,16 @@ public class UsersController {
                               @ApiParam(value = "每页行数", defaultValue = "10") @RequestParam Integer limit,
                               @ApiParam(value = "用户名", defaultValue = "admin") @RequestParam(required = false) String username) {
         return Result.ok(systemUserService.searchByOrg(page, limit, orgId, orgStatus, username));
+    }
+
+    @ApiOperation(value = "用户列表条件查询-角色", notes = "用户列表条件查询-角色", response = SystemUserVo.class)
+    @GetMapping("/role/search")
+    public Object searchByRole(@ApiParam(value = "0 查询所有部门的用户 其他则查询指定部门", defaultValue = "1") @RequestParam Integer roleId,
+                               @ApiParam(value = "0 查询指定角色内 1 查询指定角色角色外", defaultValue = "1") @RequestParam Integer roleStatus,
+                               @ApiParam(value = "页码", defaultValue = "1") @RequestParam Integer page,
+                               @ApiParam(value = "每页行数", defaultValue = "10") @RequestParam Integer limit,
+                               @ApiParam(value = "用户名", defaultValue = "admin") @RequestParam(required = false) String username) {
+        return Result.ok(systemUserService.searchByRole(page, limit, roleId, roleStatus, username));
     }
 
     @ApiOperation(value = "获取用户信息", notes = "获取用户信息", response = SystemUserVo.class)

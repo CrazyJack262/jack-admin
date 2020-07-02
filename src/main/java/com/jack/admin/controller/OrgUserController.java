@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("orgUser")
 @Api(description = "用户部门关系控制器")
-public class UserOrgController {
+public class OrgUserController {
 
     @Autowired
     private SystemOrgUserService orgUserService;

@@ -1,6 +1,8 @@
 package com.jack.admin.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.jack.admin.entity.dao.SystemUser;
@@ -10,6 +12,10 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author crazyjack262
+ * @date 2020-07-02 14:47
+ */
 @Data
 @ApiModel(value = "用户VO对象", description = "用户VO对象")
 @JsonInclude(JsonInclude.Include.NON_NULL)
