@@ -14,6 +14,12 @@ import java.util.List;
 public interface SystemMenuMapper extends BaseMapper<SystemMenu> {
 
 
+    /**
+     * 查询指定角色下的菜单
+     *
+     * @param roleId
+     * @return
+     */
     @Select("SELECT menu_url FROM t_system_menu where id in (SELECT menu_id FROM t_system_role_menu WHERE role_id = #{roleId})")
     List<String> selectByRoleId(@Param("roleId") Integer roleId);
 }
