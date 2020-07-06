@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * shiro配置
  *
- * @autor crazyjack262
+ * @author crazyjack262
  * @date 2020-06-05 09:26
  */
 @Configuration
