@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : jack
- Source Server Type    : MySQL
- Source Server Version : 50729
- Source Host           : 219.135.182.98:3306
- Source Schema         : jack-admin
-
- Target Server Type    : MySQL
- Target Server Version : 50729
- File Encoding         : 65001
-
- Date: 13/07/2020 17:37:50
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
